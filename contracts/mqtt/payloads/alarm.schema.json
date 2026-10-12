@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.tynext.id/rain/pts/alarm-1.0.schema.json",
+  "title": "RAIN PTS — alarm",
+  "description": "Payload topic rain/pts/{class}/{deviceId}/alarm. Satu pesan per transisi: raised saat alarm muncul, cleared saat hilang.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "ts", "deviceId", "code", "severity", "state", "message"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "deviceId": {
+      "description": "Harus sama dengan segmen {deviceId} di topic.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "maxLength": 32
+    },
+    "code": {
+      "description": "Kode alarm PLC, mis. A-12 (advisory STG) atau T-02 (override comm fault).",
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]{0,7}-[0-9]{1,3}$"
+    },
+    "severity": { "enum": ["info", "warning", "critical"] },
+    "state": { "enum": ["raised", "cleared"] },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "value": {
+      "description": "Angka pemicu, mis. dp_kw saat A-12 terbit.",
+      "type": "number"
+    }
+  }
+}

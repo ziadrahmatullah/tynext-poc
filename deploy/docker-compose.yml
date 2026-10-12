@@ -1,0 +1,111 @@
+name: rain-poc
+
+services:
+  emqx:
+    image: emqx/emqx:5.8.6
+    container_name: rain-emqx
+    restart: unless-stopped
+    environment:
+      EMQX_NODE__NAME: "emqx@127.0.0.1"
+      EMQX_NODE__COOKIE: "${RAIN_EMQX_COOKIE:-rain-poc-cookie}"
+      # Menghindari alur ganti-password default saat bootstrap lewat REST API.
+      EMQX_DASHBOARD__DEFAULT_PASSWORD: "${RAIN_EMQX_DASHBOARD_PASS:?RAIN_EMQX_DASHBOARD_PASS belum diset, lihat .env.example}"
+    ports:
+      # Satu-satunya port yang terbuka ke publik.
+      - "0.0.0.0:${RAIN_MQTT_HOST_PORT:-8883}:8883"
+      # Loopback saja: diakses lewat SSH tunnel, tidak pernah dari internet.
+      - "127.0.0.1:${RAIN_MQTT_PLAIN_HOST_PORT:-1883}:1883"
+      - "127.0.0.1:${RAIN_EMQX_DASHBOARD_HOST_PORT:-18083}:18083"
+    volumes:
+      - ./emqx/emqx.conf:/opt/emqx/etc/emqx.conf:ro
+      - ./emqx/acl.conf:/opt/emqx/etc/acl.conf:ro
+      - ./certs/out:/opt/emqx/etc/certs:ro
+      - emqx-data:/opt/emqx/data
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: rain-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: "${RAIN_PG_USER:-rain}"
+      POSTGRES_PASSWORD: "${RAIN_PG_PASS:?RAIN_PG_PASS belum diset, lihat .env.example}"
+      POSTGRES_DB: "${RAIN_PG_DB:-rain}"
+    ports:
+      # Loopback saja. Dari luar VPS hanya lewat SSH tunnel.
+      - "127.0.0.1:${RAIN_PG_HOST_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${RAIN_PG_USER:-rain} -d ${RAIN_PG_DB:-rain}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  # ingest dibangun dari pohon sumber repo ini, bukan dari image publik.
+  ingest:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: rain-poc/ingest:dev
+    container_name: rain-ingest
+    restart: unless-stopped
+    environment:
+      RAIN_MQTT_URL: "tls://emqx:8883"
+      RAIN_MQTT_USER: "ingest"
+      RAIN_MQTT_PASS: "${RAIN_INGEST_PASS:?RAIN_INGEST_PASS belum diset, lihat .env.example}"
+      RAIN_MQTT_CA: "/certs/ca.crt"
+      RAIN_PG_DSN: "postgres://${RAIN_PG_USER:-rain}:${RAIN_PG_PASS}@postgres:5432/${RAIN_PG_DB:-rain}?sslmode=disable"
+      RAIN_HTTP_ADDR: "0.0.0.0:8080"
+      RAIN_LOG_FORMAT: "json"
+      RAIN_LOG_LEVEL: "${RAIN_LOG_LEVEL:-info}"
+    ports:
+      - "127.0.0.1:${RAIN_INGEST_HTTP_PORT:-8080}:8080"
+    volumes:
+      - ./certs/out:/certs:ro
+    depends_on:
+      emqx:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+
+  # Stand-in CX5240. Hanya untuk dev: di hari uji sumbernya PLC sungguhan.
+  simulator:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: rain-poc/ingest:dev
+    container_name: rain-simulator
+    profiles: ["dev"]
+    restart: "no"
+    entrypoint: ["/usr/local/bin/simulator"]
+    command: ["--interval", "1s"]
+    environment:
+      RAIN_MQTT_URL: "tls://emqx:8883"
+      RAIN_MQTT_USER: "simulator-dev"
+      RAIN_MQTT_PASS: "${RAIN_SIM_PASS:?RAIN_SIM_PASS belum diset, lihat .env.example}"
+      RAIN_MQTT_CA: "/certs/ca.crt"
+      RAIN_LOG_FORMAT: "json"
+    volumes:
+      - ./certs/out:/certs:ro
+      - simulator-buffer:/home/rain/var
+    depends_on:
+      emqx:
+        condition: service_healthy
+
+volumes:
+  emqx-data:
+  pgdata:
+  simulator-buffer:

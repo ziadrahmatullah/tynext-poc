@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "deviceId": "ws-01",
+  "ts": "2026-10-12T04:30:00.000Z",
+  "seq": 18041,
+  "metrics": {
+    "irradiance_wm2": 812.4,
+    "t_amb_c": 31.2,
+    "t_module_c": 48.6
+  }
+}

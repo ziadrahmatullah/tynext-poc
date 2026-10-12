@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0",
+  "ts": "2026-10-12T04:36:11.900Z",
+  "deviceId": "ems-pv-01",
+  "code": "A-12",
+  "severity": "warning",
+  "state": "cleared",
+  "message": "Advisory STG kembali di dalam band +/-50 kW",
+  "value": -18.0
+}

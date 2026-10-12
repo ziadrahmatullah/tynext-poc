@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS state_log;
+DROP TABLE IF EXISTS device_state;
+DROP TABLE IF EXISTS telemetry;

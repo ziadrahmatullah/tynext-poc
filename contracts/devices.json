@@ -1,0 +1,71 @@
+[
+  {
+    "code": "ems-pv-01",
+    "class": "ems",
+    "name": "EMS-PV Controller (Beckhoff CX5240)",
+    "source": { "via": "plc", "device": "CX5240", "note": "nilai internal loop EMS-PV" }
+  },
+
+  {
+    "code": "combox-01",
+    "class": "pv",
+    "name": "Hopewind Combox2000",
+    "breaker": "qf-5",
+    "source": {
+      "via": "combox",
+      "proto": "modbus-tcp",
+      "port": 502,
+      "regs": { "p_pv_inv_kw": 2604, "p_pv_lim_readback_kw": 2612, "p_pv_lim_write": 40050 }
+    }
+  },
+  { "code": "pv-inv-01", "class": "pv", "name": "PV Inverter 01 (Hopewind 110 kW)", "breaker": "qf-p1", "source": { "via": "combox", "inverter": 1, "note": "TBC: register map per inverter" } },
+  { "code": "pv-inv-02", "class": "pv", "name": "PV Inverter 02 (Hopewind 110 kW)", "breaker": "qf-p1", "source": { "via": "combox", "inverter": 2, "note": "TBC: register map per inverter" } },
+  { "code": "pv-inv-03", "class": "pv", "name": "PV Inverter 03 (Hopewind 110 kW)", "breaker": "qf-p1", "source": { "via": "combox", "inverter": 3, "note": "TBC: register map per inverter" } },
+  { "code": "pv-inv-04", "class": "pv", "name": "PV Inverter 04 (Hopewind 110 kW)", "breaker": "qf-p1", "source": { "via": "combox", "inverter": 4, "note": "TBC: register map per inverter" } },
+  { "code": "pv-inv-05", "class": "pv", "name": "PV Inverter 05 (Hopewind 110 kW)", "breaker": "qf-p1", "source": { "via": "combox", "inverter": 5, "note": "TBC: register map per inverter" } },
+  { "code": "pv-inv-06", "class": "pv", "name": "PV Inverter 06 (Hopewind 110 kW)", "breaker": "qf-p1", "source": { "via": "combox", "inverter": 6, "note": "TBC: register map per inverter" } },
+  { "code": "pv-inv-07", "class": "pv", "name": "PV Inverter 07 (Hopewind 110 kW)", "breaker": "qf-p1", "source": { "via": "combox", "inverter": 7, "note": "TBC: register map per inverter" } },
+  { "code": "pv-inv-08", "class": "pv", "name": "PV Inverter 08 (Hopewind 110 kW)", "breaker": "qf-p1", "source": { "via": "combox", "inverter": 8, "note": "TBC: register map per inverter" } },
+  { "code": "pv-inv-09", "class": "pv", "name": "PV Inverter 09 (Hopewind 110 kW)", "breaker": "qf-p1", "source": { "via": "combox", "inverter": 9, "note": "TBC: register map per inverter" } },
+
+  {
+    "code": "bess-01",
+    "class": "bess",
+    "name": "BESS Topband MG-500-B 1,5 MW / 3,13 MWh",
+    "breaker": "qf-4",
+    "source": {
+      "via": "mg500",
+      "proto": "modbus-tcp",
+      "port": 1502,
+      "map": "V105",
+      "access": "read-only",
+      "regs": { "soc_pct": 38, "p_chg_bms_kw": 46, "p_kw": 15018 }
+    }
+  },
+
+  { "code": "ws-01", "class": "weather", "name": "Weather Station", "source": { "via": "combox", "unit": 3 } },
+
+  { "code": "pm-01", "class": "meter", "name": "PM-01 Combox Meter #1", "source": { "via": "combox", "unit": 1 } },
+  { "code": "pm-02", "class": "meter", "name": "PM-02 ADL400 (dibaca lewat MG-500-B)", "breaker": "qf-6", "source": { "via": "mg500", "regs": { "p_kw": 1078 } } },
+  { "code": "pm-02b", "class": "meter", "name": "PM-02B PM5560", "breaker": "qf-6", "source": { "via": "plc", "proto": "modbus-tcp", "note": "TBC: alamat & register map PM5560" } },
+  { "code": "pm-03a", "class": "meter", "name": "PM-03A Section A (genset + STG-1)", "section": "A", "source": { "via": "el3453", "slot": "TBC", "ct": "2000/5 A", "cycle_ms": 10 } },
+  { "code": "pm-03b", "class": "meter", "name": "PM-03B Section B (STG-2)", "section": "B", "source": { "via": "el3453", "slot": "TBC", "ct": "2000/5 A", "cycle_ms": 10 } },
+  { "code": "pm-04", "class": "meter", "name": "PM-04 Beban pabrik", "breaker": "qf-l", "source": { "via": "el3453", "slot": "TBC", "ct": "2000/5 A", "cycle_ms": 10 } },
+
+  { "code": "qf-1", "class": "breaker", "name": "QF-1 incoming DG-1", "section": "A", "source": { "via": "plc", "signal": "DI aux" } },
+  { "code": "qf-2", "class": "breaker", "name": "QF-2 incoming STG-1", "section": "A", "source": { "via": "plc", "signal": "DI aux" } },
+  { "code": "qf-3", "class": "breaker", "name": "QF-3 incoming DG-3", "section": "A", "source": { "via": "plc", "signal": "DI aux" } },
+  { "code": "qf-4", "class": "breaker", "name": "QF-4 incoming BESS", "source": { "via": "plc", "signal": "DI aux" } },
+  { "code": "qf-5", "class": "breaker", "name": "QF-5 incoming PV", "source": { "via": "plc", "signal": "DI aux" } },
+  { "code": "qf-6", "class": "breaker", "name": "QF-6 outgoing PV + BESS", "source": { "via": "plc", "signal": "DI aux" } },
+  { "code": "qf-g2", "class": "breaker", "name": "QF-G2 incoming DG-2", "section": "A", "source": { "via": "plc", "signal": "DI aux" } },
+  { "code": "qf-t2", "class": "breaker", "name": "QF-T2 incoming STG-2", "section": "B", "source": { "via": "plc", "signal": "DI aux" } },
+  { "code": "qf-l", "class": "breaker", "name": "QF-L outgoing beban pabrik", "source": { "via": "plc", "signal": "DI aux" } },
+  { "code": "qf-p1", "class": "breaker", "name": "QF-P1 ACDB PLTS", "source": { "via": "plc", "signal": "DI aux" } },
+
+  { "code": "stg-01", "class": "gen", "name": "STG-1 Steam Turbine 2 MVA", "breaker": "qf-2", "section": "A", "source": { "via": "plc", "signal": "DI aux", "note": "daya hanya terukur per section di pm-03a" } },
+  { "code": "stg-02", "class": "gen", "name": "STG-2 Steam Turbine (rating TBC)", "breaker": "qf-t2", "section": "B", "source": { "via": "plc", "signal": "DI aux", "note": "daya hanya terukur per section di pm-03b" } },
+  { "code": "dg-01", "class": "gen", "name": "DG-1 Genset 500 kVA", "breaker": "qf-1", "section": "A", "source": { "via": "plc", "signal": "DI aux", "note": "daya hanya terukur per section di pm-03a" } },
+  { "code": "dg-02", "class": "gen", "name": "DG-2 Genset (rating TBC)", "breaker": "qf-g2", "section": "A", "source": { "via": "plc", "signal": "DI aux", "note": "daya hanya terukur per section di pm-03a" } },
+  { "code": "dg-03", "class": "gen", "name": "DG-3 Genset 1000 kVA", "breaker": "qf-3", "section": "A", "source": { "via": "plc", "signal": "DI aux", "note": "daya hanya terukur per section di pm-03a" } }
+]

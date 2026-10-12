@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "deviceId": "pv-inv-01",
+  "ts": "2026-10-12T04:30:00.000Z",
+  "seq": 18041,
+  "metrics": {
+    "p_kw": 66.8,
+    "q_kvar": 0.0
+  },
+  "state": {
+    "status": "RUN"
+  }
+}

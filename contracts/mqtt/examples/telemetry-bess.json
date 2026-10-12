@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "deviceId": "bess-01",
+  "ts": "2026-10-12T04:30:00.000Z",
+  "seq": 18041,
+  "metrics": {
+    "soc_pct": 62.5,
+    "p_chg_bms_kw": 1200.0,
+    "p_kw": -350.0,
+    "f_hz": 50.01
+  },
+  "state": {
+    "forming": true
+  }
+}

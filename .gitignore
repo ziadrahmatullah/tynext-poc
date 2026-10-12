@@ -1,0 +1,20 @@
+# Kunci dan sertifikat yang dibuat deploy/certs/make-certs.sh
+deploy/certs/out/
+
+# Konfigurasi berisi kredensial
+.env
+.env.local
+
+# Binari hasil build
+/bin/
+/cmd/ingest/ingest
+/cmd/simulator/simulator
+
+# Keluaran skenario uji
+/scripts/scenarios/out/
+*.count.json
+
+# Buffer store-and-forward simulator
+/var/
+*.queue
+*.queue.offset

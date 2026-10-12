@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "deviceId": "ems-pv-01",
+  "ts": "2026-10-12T04:30:00.000Z",
+  "seq": 18041,
+  "metrics": {
+    "p_pm02_kw": 250.0,
+    "p_pv_inv_kw": 601.2,
+    "p_pv_fact_kw": 600.0,
+    "p_lim_fact_kw": 640.0,
+    "pi_trim_kw": 12.5,
+    "eta_link": 0.98,
+    "p_pv_lim_kw": 640.0,
+    "p_chg_allow_kw": 1000.0,
+    "p_load_kw": 1050.0,
+    "p_gen_kw": 800.0,
+    "p_stg_adv_kw": 780.0,
+    "dp_kw": 20.0,
+    "q_ref_kvar": 0.0
+  },
+  "state": {
+    "mode": "AUTO",
+    "override": "none",
+    "adv_rule": "R3",
+    "pv_day": "HIGH",
+    "q_mode": "PF1"
+  }
+}

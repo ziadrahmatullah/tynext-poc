@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0",
+  "ts": "2026-10-12T04:31:02.480Z",
+  "deviceId": "ems-pv-01",
+  "code": "A-12",
+  "severity": "warning",
+  "state": "raised",
+  "message": "Advisory STG: naikkan beban STG, dp -62 kW bertahan 60 s",
+  "value": -62.0
+}

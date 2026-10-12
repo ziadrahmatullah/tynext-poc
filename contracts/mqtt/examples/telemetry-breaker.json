@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "deviceId": "qf-5",
+  "ts": "2026-10-12T04:30:00.000Z",
+  "seq": 18041,
+  "metrics": {},
+  "state": {
+    "closed": true,
+    "tripped": false
+  }
+}

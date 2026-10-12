@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS alarms;
+DROP TABLE IF EXISTS device_status;

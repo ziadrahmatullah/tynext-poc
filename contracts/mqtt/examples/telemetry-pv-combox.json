@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0",
+  "deviceId": "combox-01",
+  "ts": "2026-10-12T04:30:00.000Z",
+  "seq": 18041,
+  "metrics": {
+    "p_pv_inv_kw": 601.2,
+    "p_pv_lim_readback_kw": 640.0
+  }
+}

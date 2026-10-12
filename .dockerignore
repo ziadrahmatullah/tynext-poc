@@ -1,0 +1,7 @@
+.git
+.env
+.env.local
+deploy/certs/out
+scripts/scenarios/out
+var
+*.log
